@@ -1,0 +1,10 @@
+fields:
+  pageTitle: Counter | Shano JSS
+placeholders:
+  jss-main:
+  - componentName: Counter
+    fields:
+      heading: This is counter
+      content: |
+        <p>If you want to increment the count just click on the increment button bellow</p>
+        <p>If you want to decrement the count just click on the decrement button bellow</p>
