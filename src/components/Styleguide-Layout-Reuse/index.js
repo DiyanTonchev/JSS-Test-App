@@ -9,9 +9,9 @@ import StyleguideSpecimen from '../Styleguide-Specimen';
  * in a column tag (thus creating a horizontally laid out placeholder)
  */
 const StyleguideLayoutReuse = (props) => (
-  <StyleguideSpecimen {...props} e2eId="styleguide-layout-reuse">
-    <div className="row">
-      {/*
+	<StyleguideSpecimen {...props} e2eId="styleguide-layout-reuse">
+		<div className="row">
+			{/*
         This placeholder is using _render props_ to enable customizing the markup for each component within.
         In this case, it's placing each component in its own column of a flexbox layout - giving an n-up columnar layout.
         The component itself does not need to know it's living in a columnar layout.
@@ -25,18 +25,18 @@ const StyleguideLayoutReuse = (props) => (
 
         Generally speaking stick to renderEach and renderEmpty unless doing something really custom.
        */}
-      <Placeholder
-        rendering={props.rendering}
-        name="jss-reuse-example"
-        renderEach={(component, index) => (
-          <div className="col-sm" key={index}>
-            {component}
-          </div>
-        )}
-        renderEmpty={(components) => <div className="col-sm">{components}</div>}
-      />
-    </div>
-  </StyleguideSpecimen>
+			<Placeholder
+				rendering={props.rendering}
+				name="jss-reuse-example"
+				renderEach={(component, index) => (
+					<div className="col-sm" key={index}>
+						{component}
+					</div>
+				)}
+				renderEmpty={(components) => <div className="col-sm">{components}</div>}
+			/>
+		</div>
+	</StyleguideSpecimen>
 );
 
 export default StyleguideLayoutReuse;

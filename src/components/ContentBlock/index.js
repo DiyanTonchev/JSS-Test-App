@@ -7,10 +7,10 @@ import { Text, RichText } from '@sitecore-jss/sitecore-jss-react';
  * JSS component that's useful.
  */
 const ContentBlock = ({ fields }) => (
-  <React.Fragment>
-    <Text tag="h2" className="display-4" field={fields.heading} />
-    <RichText className="contentDescription" field={fields.content} />
-  </React.Fragment>
+	<React.Fragment>
+		<Text tag="h2" className="display-4" field={fields.heading} />
+		<RichText className="contentDescription" field={fields.content} />
+	</React.Fragment>
 );
 
 export default ContentBlock;

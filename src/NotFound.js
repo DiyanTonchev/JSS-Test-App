@@ -9,15 +9,15 @@ import React from 'react';
 // without losing the ability to render them on your 404 pages :)
 
 const NotFound = ({ context = { site: { name: '' }, language: '' } }) => (
-  <React.Fragment>
-    <h1>Page not found</h1>
-    <p>This page does not exist.</p>
-    <p>
-      Site: {context.site && context.site.name}
-      <br />
-      Language: {context.language}
-    </p>
-  </React.Fragment>
+	<React.Fragment>
+		<h1>Page not found</h1>
+		<p>This page does not exist.</p>
+		<p>
+			Site: {context.site && context.site.name}
+			<br />
+			Language: {context.language}
+		</p>
+	</React.Fragment>
 );
 
 export default NotFound;

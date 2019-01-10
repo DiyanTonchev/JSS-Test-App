@@ -7,10 +7,10 @@ import { Placeholder, Text } from '@sitecore-jss/sitecore-jss-react';
  * exposes.
  */
 const StyleguideSection = (props) => (
-  <div className="pt-3" id={`i${props.rendering.uid.replace(/[{}]/g, '')}`}>
-    <Text className="border-bottom" field={props.fields.heading} tag="h3" />
-    <Placeholder name="jss-styleguide-section" rendering={props.rendering} />
-  </div>
+	<div className="pt-3" id={`i${props.rendering.uid.replace(/[{}]/g, '')}`}>
+		<Text className="border-bottom" field={props.fields.heading} tag="h3" />
+		<Placeholder name="jss-styleguide-section" rendering={props.rendering} />
+	</div>
 );
 
 export default StyleguideSection;

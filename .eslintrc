@@ -1,9 +1,7 @@
 {
   "extends": [
-    "prettier",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:prettier/recommended",
     "plugin:react/recommended"
   ],
   "parser": "babel-eslint",
@@ -14,7 +12,8 @@
   },
   "plugins": [
     "import",
-    "react"
+    "react",
+    "prettier"
   ],
   "settings": {
     "import/resolver": {
@@ -34,6 +33,7 @@
     "document": true
   },
   "rules": {
+    "import/no-unresolved": "off",
     "import/no-duplicates": "off",
     "import/no-named-as-default": "off",
     "max-len": "off",
@@ -52,6 +52,7 @@
     "react/no-danger": "off",
     "react/require-default-props": "off",
     "react/no-array-index-key": "off",
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "prettier/prettier": "error"
   }
 }

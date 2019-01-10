@@ -1,9 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import {
-  withSitecoreContext,
-  resetExperienceEditorChromes,
-} from '@sitecore-jss/sitecore-jss-react';
+import { withSitecoreContext, resetExperienceEditorChromes } from '@sitecore-jss/sitecore-jss-react';
 
 /**
  * Higher order component that abstracts common JSS + Apollo integration needs.
@@ -17,101 +14,94 @@ import {
  * @param {*} configuration Values passed in are shipped to react-apollo configuration (https://www.apollographql.com/docs/react/basics/setup.html#graphql-config)
  */
 function GraphQLData(query, configuration = {}) {
-  return function wrapComponent(Component) {
-    class SitecoreRenderingWrapper extends React.Component {
-      static displayName = `JSSGraphQLComponent(${Component.displayName ||
-        Component.name ||
-        'Component'})`;
+	return function wrapComponent(Component) {
+		class SitecoreRenderingWrapper extends React.Component {
+			static displayName = `JSSGraphQLComponent(${Component.displayName || Component.name || 'Component'})`;
 
-      render() {
-        if (!query) {
-          throw new Error(
-            'query was falsy in GraphQLData. It should be a GraphQL query from graphql-tag. Perhaps missing graphql-tag/loader?'
-          );
-        }
+			render() {
+				if (!query) {
+					throw new Error(
+						'query was falsy in GraphQLData. It should be a GraphQL query from graphql-tag. Perhaps missing graphql-tag/loader?'
+					);
+				}
 
-        const newConfiguration = { ...configuration };
+				const newConfiguration = { ...configuration };
 
-        if (!newConfiguration.name) newConfiguration.name = 'data';
+				if (!newConfiguration.name) newConfiguration.name = 'data';
 
-        // ensure variables object exists
-        newConfiguration.options = newConfiguration.options || {};
-        newConfiguration.options.variables = newConfiguration.options.variables || {};
+				// ensure variables object exists
+				newConfiguration.options = newConfiguration.options || {};
+				newConfiguration.options.variables = newConfiguration.options.variables || {};
 
-        // if we're in experience editor or preview we need to disable SSR of GraphQL queries
-        // because SSR queries are made unauthenticated, so they would have normal mode data = bad
-        if (this.props.sitecoreContext && this.props.sitecoreContext.pageState !== 'normal') {
-          newConfiguration.options.ssr = false;
-        } else if (
-          query.definitions.some(
-            (def) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
-          )
-        ) {
-          // if the document includes any subscriptions, we also disable SSR as this hangs the SSR process
-          // not to mention being quite silly to SSR when they're reactive
-          newConfiguration.options.ssr = false;
-        }
+				// if we're in experience editor or preview we need to disable SSR of GraphQL queries
+				// because SSR queries are made unauthenticated, so they would have normal mode data = bad
+				if (this.props.sitecoreContext && this.props.sitecoreContext.pageState !== 'normal') {
+					newConfiguration.options.ssr = false;
+				} else if (
+					query.definitions.some(
+						(def) => def.kind === 'OperationDefinition' && def.operation === 'subscription'
+					)
+				) {
+					// if the document includes any subscriptions, we also disable SSR as this hangs the SSR process
+					// not to mention being quite silly to SSR when they're reactive
+					newConfiguration.options.ssr = false;
+				}
 
-        // find all variable definitions in the GraphQL query, so we can send only ones we're using
-        const variableNames = extractVariableNames(query);
+				// find all variable definitions in the GraphQL query, so we can send only ones we're using
+				const variableNames = extractVariableNames(query);
 
-        // set the datasource variable, if we're using it
-        if (variableNames.datasource && this.props.rendering && this.props.rendering.dataSource) {
-          newConfiguration.options.variables.datasource = this.props.rendering.dataSource;
-        }
+				// set the datasource variable, if we're using it
+				if (variableNames.datasource && this.props.rendering && this.props.rendering.dataSource) {
+					newConfiguration.options.variables.datasource = this.props.rendering.dataSource;
+				}
 
-        // set the contextItem variable, if we're using it
-        if (
-          variableNames.contextItem &&
-          this.props.sitecoreContext &&
-          this.props.sitecoreContext.itemId
-        ) {
-          newConfiguration.options.variables.contextItem = this.props.sitecoreContext.itemId;
-        }
+				// set the contextItem variable, if we're using it
+				if (variableNames.contextItem && this.props.sitecoreContext && this.props.sitecoreContext.itemId) {
+					newConfiguration.options.variables.contextItem = this.props.sitecoreContext.itemId;
+				}
 
-        // build the props processing function that will set the result object to the name
-        newConfiguration.props = (props) => {
-          const innerQuery = props[newConfiguration.name];
+				// build the props processing function that will set the result object to the name
+				newConfiguration.props = (props) => {
+					const innerQuery = props[newConfiguration.name];
 
-          let resultProps = {};
+					let resultProps = {};
 
-          resultProps[newConfiguration.name] = innerQuery;
+					resultProps[newConfiguration.name] = innerQuery;
 
-          // run a user-specified props function too if one exists
-          if (configuration.props)
-            resultProps = Object.assign(resultProps, configuration.props(props));
+					// run a user-specified props function too if one exists
+					if (configuration.props) resultProps = Object.assign(resultProps, configuration.props(props));
 
-          return resultProps;
-        };
+					return resultProps;
+				};
 
-        const GQL = graphql(query, newConfiguration)(Component);
-        return <GQL {...this.props} />;
-      }
+				const GQL = graphql(query, newConfiguration)(Component);
+				return <GQL {...this.props} />;
+			}
 
-      // eslint-disable-next-line class-methods-use-this
-      componentDidUpdate() {
-        resetExperienceEditorChromes();
-      }
-    }
+			// eslint-disable-next-line class-methods-use-this
+			componentDidUpdate() {
+				resetExperienceEditorChromes();
+			}
+		}
 
-    return withSitecoreContext()(SitecoreRenderingWrapper);
-  };
+		return withSitecoreContext()(SitecoreRenderingWrapper);
+	};
 }
 
 function extractVariableNames(query) {
-  const variableNames = {};
-  query.definitions
-    .map((def) => def.variableDefinitions)
-    .filter((def) => def)
-    .forEach((defs) =>
-      defs.forEach((def) => {
-        if (def.kind && def.kind === 'VariableDefinition') {
-          variableNames[def.variable.name.value] = true;
-        }
-      })
-    );
+	const variableNames = {};
+	query.definitions
+		.map((def) => def.variableDefinitions)
+		.filter((def) => def)
+		.forEach((defs) =>
+			defs.forEach((def) => {
+				if (def.kind && def.kind === 'VariableDefinition') {
+					variableNames[def.variable.name.value] = true;
+				}
+			})
+		);
 
-  return variableNames;
+	return variableNames;
 }
 
 export default GraphQLData;

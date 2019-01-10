@@ -7,17 +7,16 @@ import { Text, RichText, withSitecoreContext } from '@sitecore-jss/sitecore-jss-
  * author experience.
  */
 const StyleguideLayoutTabsTab = (props) => (
-  <div data-e2e-class="styleguide-layout-tabs-tab">
-    {/*
+	<div data-e2e-class="styleguide-layout-tabs-tab">
+		{/*
       When we're editing the tabs we stack each tab vertically,
       which means there's no regular tab titles rendered.
       So we conditionally render the tab title here, when editing. */}
-    {props.sitecoreContext &&
-      props.sitecoreContext.pageEditing && <Text tag="h5" field={props.fields.title} />}
+		{props.sitecoreContext && props.sitecoreContext.pageEditing && <Text tag="h5" field={props.fields.title} />}
 
-    {/* React.Fragment tells React to not use any wrapping tag for the component */}
-    <RichText field={props.fields.content} />
-  </div>
+		{/* React.Fragment tells React to not use any wrapping tag for the component */}
+		<RichText field={props.fields.content} />
+	</div>
 );
 
 export default withSitecoreContext()(StyleguideLayoutTabsTab);

@@ -35,21 +35,19 @@ import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 
 export default function(endpoint, ssr, initialCacheState) {
-  /* HTTP link selection: default to batched + APQ */
-  const link = createPersistedQueryLink().concat(
-    new BatchHttpLink({ uri: endpoint, credentials: 'include' })
-  );
+	/* HTTP link selection: default to batched + APQ */
+	const link = createPersistedQueryLink().concat(new BatchHttpLink({ uri: endpoint, credentials: 'include' }));
 
-  const cache = new InMemoryCache({
-    fragmentMatcher: new IntrospectionFragmentMatcher({
-      introspectionQueryResultData,
-    }),
-  });
+	const cache = new InMemoryCache({
+		fragmentMatcher: new IntrospectionFragmentMatcher({
+			introspectionQueryResultData
+		})
+	});
 
-  return new ApolloClient({
-    ssrMode: ssr,
-    ssrForceFetchDelay: 100,
-    link,
-    cache: cache.restore(initialCacheState),
-  });
+	return new ApolloClient({
+		ssrMode: ssr,
+		ssrForceFetchDelay: 100,
+		link,
+		cache: cache.restore(initialCacheState)
+	});
 }

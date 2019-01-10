@@ -27,14 +27,14 @@ let renderFunction = ReactDOM.render;
 let __JSS_STATE__ = null;
 const ssrRawJson = document.getElementById('__JSS_STATE__');
 if (ssrRawJson) {
-  __JSS_STATE__ = JSON.parse(ssrRawJson.innerHTML);
+	__JSS_STATE__ = JSON.parse(ssrRawJson.innerHTML);
 }
 if (__JSS_STATE__) {
-  // push the initial SSR state into the route handler, where it will be used
-  setServerSideRenderingState(__JSS_STATE__);
+	// push the initial SSR state into the route handler, where it will be used
+	setServerSideRenderingState(__JSS_STATE__);
 
-  // when React initializes from a SSR-based initial state, you need to render with `hydrate` instead of `render`
-  renderFunction = ReactDOM.hydrate;
+	// when React initializes from a SSR-based initial state, you need to render with `hydrate` instead of `render`
+	renderFunction = ReactDOM.hydrate;
 }
 
 /*
@@ -44,8 +44,7 @@ if (__JSS_STATE__) {
 */
 // Apollo supports SSR of GraphQL queries, so like JSS SSR, it has an object we can pre-hydrate the client cache from
 // to avoid needing to re-run GraphQL queries after the SSR page loads
-const initialGraphQLState =
-  __JSS_STATE__ && __JSS_STATE__.APOLLO_STATE ? __JSS_STATE__.APOLLO_STATE : null;
+const initialGraphQLState = __JSS_STATE__ && __JSS_STATE__.APOLLO_STATE ? __JSS_STATE__.APOLLO_STATE : null;
 
 const graphQLClient = GraphQLClientFactory(config.graphQLEndpoint, false, initialGraphQLState);
 
@@ -55,15 +54,11 @@ const graphQLClient = GraphQLClientFactory(config.graphQLEndpoint, false, initia
 // initialize the dictionary, then render the app
 // note: if not making a multlingual app, the dictionary init can be removed.
 i18ninit().then(() => {
-  // HTML element to place the app into
-  const rootElement = document.getElementById('root');
+	// HTML element to place the app into
+	const rootElement = document.getElementById('root');
 
-  renderFunction(
-    <AppRoot
-      path={window.location.pathname}
-      Router={BrowserRouter}
-      graphQLClient={graphQLClient}
-    />,
-    rootElement
-  );
+	renderFunction(
+		<AppRoot path={window.location.pathname} Router={BrowserRouter} graphQLClient={graphQLClient} />,
+		rootElement
+	);
 });
